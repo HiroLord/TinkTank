@@ -1,0 +1,60 @@
+<html>
+<head>
+    <meta name="viewport" content="width=320,user-scalable=false" />
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="tank-cstyle.css"/>
+    <title>Tink Tank</title>
+</head>
+<body>
+    <script src="lib/ws-client.js"></script>
+    <script src="tank-cscript.js"></script>
+    <div id="gamediv">
+        <div class="divider">
+        </div>
+        <div class="move-btn" id="left-btn">
+            <i class="fa fa-arrow-circle-left"></i>
+        </div>
+        <div class="move-btn" id="middle-btn">
+            <i class="fa fa-rotate-right"></i>
+        </div>
+        <div class="move-btn" id="right-btn">
+            <i class="fa fa-arrow-circle-right"></i>
+        </div>
+
+        <div id="aiming">
+            <div class="aim-btn aim-left aim-top">
+                <i class="fa fa-bullseye"></i>
+            </div>
+            <div class="aim-btn aim-top">
+                <i class="fa fa-bullseye"></i>
+            </div>
+            <div class="aim-btn aim-right aim-top">
+                <i class="fa fa-bullseye"></i>
+            </div>
+            <div class="aim-btn aim-right">
+                <i class="fa fa-bullseye"></i>
+            </div>
+            <div class="aim-btn aim-right aim-bottom">
+                <i class="fa fa-bullseye"></i>
+            </div>
+            <div class="aim-btn aim-bottom">
+                <i class="fa fa-bullseye"></i>
+            </div>
+            <div class="aim-btn aim-left aim-bottom">
+                <i class="fa fa-bullseye"></i>
+            </div>
+            <div class="aim-btn aim-left">
+                <i class="fa fa-bullseye"></i>
+            </div>
+        </div>
+
+        <div id="reset">
+            RESET
+        </div>
+        <div id="confirm">
+            CONFIRM
+        </div>
+    </div>
+</body>
+</html>

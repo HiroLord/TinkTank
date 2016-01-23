@@ -1,0 +1,143 @@
+body {
+    background-color: #333;
+    width: 320px;
+    /*border: 1px solid red;*/
+    padding: 0;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+#confirm {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    /*background-color: green;*/
+    top: 256px;
+    left: 128px;
+    border: 1px solid #020;
+    border-radius: 8px;
+    font-size: 42pt;
+    text-align: center;
+}
+
+.green {
+    background-color: green;
+}
+
+.disabled {
+    background-color: red;
+}
+
+#gamediv {
+    position: absolute;
+    width: 320px;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
+.move-option, .fire-option {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    font-size: 48pt;
+    color: #115;
+    border-radius: 8px;
+    border: 1px solid black;
+    text-align: center;
+    /*outline: 0;*/
+}
+
+.move-option {
+    left: 48px;
+    background-color: #BEB;
+}
+
+.fire-option {
+    right: 48px;
+    background-color: #EBB;
+}
+
+#move-one, #fire-one {
+    top: 56px;
+}
+
+#move-two, #fire-two {
+    top: 128px;
+}
+
+#move-three, #fire-three {
+    top: 200px;
+}
+
+#move-four, #fire-four {
+    top: 272px;
+}
+
+.side-scroll {
+    position:absolute;
+    height: 64px;
+    width: 100%;
+    left: 0;
+    background-color: #888;
+    border: 1px solid #222;
+
+    white-space: nowrap;
+    overflow-x: scroll;
+}
+
+#top-scroll {
+    bottom: 64px;
+    background-color: #8C8;
+}
+
+#bottom-scroll {
+    bottom: 0px;
+    background-color: #C88;
+}
+
+.scroll-content {
+    width: 800px;
+    padding-right: 15px;
+}
+
+.scroll-option {
+    position: relative;
+    margin-top: 8px;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background-color: #112;
+    float: left;
+}
+
+.divider {
+    position: absolute;
+    border: 1px solid #AAA;
+    width: 100%;
+    height: 0px;
+    top: 48px;
+    left: 0;
+}
+
+.move-btn, .fire-btn {
+    border: 1px solid black;
+    border-radius: 8px;
+    color: white;
+    font-size: 36pt;
+    text-align: center;
+}
+
+.move-btn {
+    background-color: #090;
+}
+
+.fire-btn {
+    background-color: #900;
+}
+
+.move-selected, .fire-selected {
+    background-color: #259;
+}
