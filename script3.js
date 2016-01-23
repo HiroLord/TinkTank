@@ -146,14 +146,18 @@ function handleNetwork() {
             }
         }
         for (var i=0; i<4; i++) {
-            dir = packet.readInt();
-            pTanks[pID].nextWeapon(1, dir);
+            dir = packet.readInt() - 1;
+            if (dir >= 0) {
+                pTanks[pID].nextWeapon(1, dir);
+            } else {
+                pTanks[pID].nextWeapon(0, dir);
+            }
         }
     }
 }
 
 function newPlayer(pID, name) {
-    newTank(pID);
+    newTank(pID, name);
 }
 
 
@@ -162,16 +166,20 @@ var pTanks = [];
 var bullets = [];
 var gameObjects = [];
 
-function newTank(tID) {
+function newTank(tID, name) {
     var t = {};
     t.tID = tID;
-    t.x = 24;
-    t.y = 24;
+    t.name = name;
 
-    t.r = 0;
-    t.c = 0;
+    t.health = 4;
+
+    t.r = parseInt(Math.random() * gridHeight);
+    t.c = parseInt(Math.random() * gridWidth);
     t.newR = t.r;
     t.newC = t.c;
+
+    t.x = 24;
+    t.y = 24;
 
     t.width = 30;
     t.height = 30;
@@ -190,6 +198,13 @@ function newTank(tID) {
     t.reposition = function() {
         t.x = startX + (t.c * squareWidth) + squareWidth/2;
         t.y = startY + (t.r * squareHeight) + squareHeight/2;
+    }
+
+    t.takeDamage = function(dam) {
+        this.health -= dam;
+        if (this.health < 1) {
+            
+        }
     }
 
     t.nextPosition = function() {
@@ -212,6 +227,9 @@ function newTank(tID) {
     }
 
     t.fire = function() {
+        if (this.health < 1) {
+            return;
+        }
         if (this.nextWep.length > 0) {
             var wep = this.nextWep.shift();
             if (wep[0] == 1) {
@@ -221,7 +239,7 @@ function newTank(tID) {
     }
 
     t.move = function(stage) {
-        if (stage != STAGE_MOVE) {
+        if (stage != STAGE_MOVE || this.health < 1) {
             return;
         }
         var newX = this.x;
@@ -258,8 +276,14 @@ function newTank(tID) {
     }
 
     t.draw = function(ctx) {
+        if (this.health < 1) {
+            return;
+        }
         ctx.fillStyle = "rgb(200,10,0)";
         ctx.fillRect(this.x - this.width/2, this.y - this.height/2, this.width, this.height);
+        ctx.font = "16px sans-serif";
+        ctx.fillStyle = "rgb(0,0,50)";
+        ctx.fillText(this.name + " : " + this.health, this.x-20, this.y+4);
     }
 
     t.reposition();
@@ -275,9 +299,20 @@ function newBullet(source, dir) {
     var b = {};
     b.x = source.x;
     b.y = source.y;
+    b.source = source;
     b.dir = dir;
 
     b.move = function(stage) {
+        for (var t=0; t<tanks.length; t++) {
+            if (tanks[t] == this.source) {
+                continue;
+            }
+            if (Math.abs(tanks[t].x-this.x) < squareWidth/3 || Math.abs(tanks[t].y-this.y) < squareHeight/3) {
+                tanks[t].takeDamage(1);
+                removeBullet(this);
+            }
+        }
+
         if (stage != STAGE_SHOOT) {
             return;
         }
@@ -331,7 +366,7 @@ var STAGE_SET = 1;
 var STAGE_MOVE = 2;
 var STAGE_SHOOT= 3;
 
-var stageTimer = 300;
+var stageTimer = 3600;
 var round = 0;
 
 function gameLoop(ctx) {
@@ -412,7 +447,7 @@ function changeStage(newStage) {
     }
 
     if (newStage == STAGE_SET) {
-        stageTimer = 60*45;
+        stageTimer = 60*30;
         for (var t=0; t<tanks.length; t++) {
             var packet = newPacket(2);
             packet.send(extend(tanks[t].tID, 2));
