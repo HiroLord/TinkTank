@@ -86,7 +86,7 @@ function startConnection() {
     }
 
     // Start the connection!
-    wsconnect("ws://128.61.20.158:8886", onopen, onclose);
+    wsconnect("ws://games.room409.xyz:8886", onopen, onclose);
 }
 
 // This function handles incoming packets

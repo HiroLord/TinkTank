@@ -99,7 +99,7 @@ function startConnection() {
         alert("Lost connection...");
     }
 
-    wsconnect("ws://128.61.20.158:8886", onopen, onclose);
+    wsconnect("ws://games.room409.xyz:8886", onopen, onclose);
 }
 
 function handleNetwork() {
@@ -307,7 +307,7 @@ function newBullet(source, dir) {
             if (tanks[t] == this.source) {
                 continue;
             }
-            if (Math.abs(tanks[t].x-this.x) < squareWidth/3 || Math.abs(tanks[t].y-this.y) < squareHeight/3) {
+            if (Math.abs(tanks[t].x-this.x) < squareWidth/3 && Math.abs(tanks[t].y-this.y) < squareHeight/3) {
                 tanks[t].takeDamage(1);
                 removeBullet(this);
             }
@@ -447,7 +447,7 @@ function changeStage(newStage) {
     }
 
     if (newStage == STAGE_SET) {
-        stageTimer = 60*30;
+        stageTimer = 60*60;
         for (var t=0; t<tanks.length; t++) {
             var packet = newPacket(2);
             packet.send(extend(tanks[t].tID, 2));
