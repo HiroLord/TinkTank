@@ -29,18 +29,6 @@ $(document).ready(function() {
 
     grid = path;
 
-    /*
-    newTank(0);
-    tanks[0].movePosition(1,0);
-    tanks[0].movePosition(1,0);
-    tanks[0].movePosition(0,1);
-
-    newTank(1);
-    tanks[1].movePosition(0,1);
-    tanks[1].movePosition(1,0);
-    tanks[1].movePosition(0,1);
-    */
-
     setInterval(function() {
         handleNetwork();
         gameLoop(ctx);
@@ -67,20 +55,16 @@ function setupMessages() {
 
     var i1 = createMsgStruct(1, false);
     i1.addChars(2);
-    i1.addChars(2);
-    i1.addChars(2);
-    i1.addChars(2);
-    i1.addChars(2);
-    i1.addChars(2);
-    i1.addChars(2);
-    i1.addChars(2);
-    i1.addChars(2);
+    i1.addChars(1);
+    i1.addChars(1);
 
     var o999 = createMsgStruct(999, true);
     o999.addChars(4);
     o999.addString();
 
     var o0 = createMsgStruct(0, true);
+
+    var o1 = createMsgStruct(1, true);
 
     var o2 = createMsgStruct(2, true);
 
@@ -131,28 +115,22 @@ function handleNetwork() {
         }
     } else if (msgID === 1) {
         var pID = packet.readInt();
-        for (var i=0; i<4; i++) {
-            dir = packet.readInt();
-            if (dir === 1) {
-                pTanks[pID].movePosition(-1, 0);
-            } else if (dir === 2) {
-                pTanks[pID].movePosition(0, 1);
-            } else if (dir === 3) {
-                pTanks[pID].movePosition(1, 0);
-            } else if (dir === 4) {
-                pTanks[pID].movePosition(0, -1);
-            } else {
-                pTanks[pID].movePosition(0, 0);
-            }
+        var num = packet.readInt();
+        var dir = packet.readInt();
+        var nextFour = pTanks[pID].nextFour;
+        if (dir === 1) {
+            nextFour[num] = [-1, 0];
+        } else if (dir === 2) {
+            nextFour[num] = [0, 1];
+        } else if (dir === 3) {
+            nextFour[num] = [1, 0];
+        } else if (dir === 4) {
+            nextFour[num] = [0, -1];
+        } else {
+            nextFour[num] = [0, 0];
         }
-        for (var i=0; i<4; i++) {
-            dir = packet.readInt() - 1;
-            if (dir >= 0) {
-                pTanks[pID].nextWeapon(1, dir);
-            } else {
-                pTanks[pID].nextWeapon(0, dir);
-            }
-        }
+        var packet = newPacket(1);
+        packet.send(extend(pID, 2));
     }
 }
 
@@ -187,6 +165,8 @@ function newTank(tID, name) {
     t.next = [];
     t.nextWep = [];
 
+    t.nextFour = [[0,0], [0,0], [0,0], [0,0]];
+
     t.movePosition = function(dR, dC) {
         this.next.push([dR, dC]);
     }
@@ -204,6 +184,13 @@ function newTank(tID, name) {
         this.health -= dam;
         if (this.health < 1) {
             
+        }
+    }
+
+    t.setPositions = function() {
+        for (var i=0; i<4; i++) {
+            this.movePosition(this.nextFour[i][0], this.nextFour[i][1]);
+            this.nextFour[i] = [0, 0];
         }
     }
 
@@ -366,7 +353,7 @@ var STAGE_SET = 1;
 var STAGE_MOVE = 2;
 var STAGE_SHOOT= 3;
 
-var stageTimer = 3600;
+var stageTimer = 60 * 15;
 var round = 0;
 
 function gameLoop(ctx) {
@@ -422,6 +409,12 @@ function changeStage(newStage) {
     if (stage == STAGE_SHOOT) { 
         for (var b=0; b<bullets.length; b++) {
             removeBullet(bullets[b]);
+        }
+    }
+
+    if (stage == STAGE_SET && newStage == STAGE_MOVE) {
+        for (var t=0; t<tanks.length; t++) {
+            tanks[t].setPositions();
         }
     }
 

@@ -12,12 +12,20 @@ body {
     width: 64px;
     height: 64px;
     /*background-color: green;*/
-    top: 256px;
+    bottom: 80px;
     left: 128px;
     border: 1px solid #020;
     border-radius: 8px;
     font-size: 42pt;
     text-align: center;
+}
+
+.confirming {
+    position: absolute;
+    left: 9px;
+    top: 6px;
+    font-size: 38pt;
+    color: white;
 }
 
 .green {
@@ -36,7 +44,7 @@ body {
     top: 0;
 }
 
-.move-option, .fire-option {
+.move-option, .power-option, .fire-option {
     position: absolute;
     width: 64px;
     height: 64px;
@@ -53,32 +61,51 @@ body {
     background-color: #BEB;
 }
 
+.power-option {
+    left: 127px;
+    background-color: #BBE;
+}
+
 .fire-option {
     right: 48px;
     background-color: #EBB;
 }
 
-#move-one, #fire-one {
+#move-one, #power-one, #fire-one {
     top: 56px;
 }
 
-#move-two, #fire-two {
+#move-two, #power-two, #fire-two {
     top: 128px;
 }
 
-#move-three, #fire-three {
+#move-three, #power-three, #fire-three {
     top: 200px;
 }
 
-#move-four, #fire-four {
+#move-four, #power-four, #fire-four {
     top: 272px;
+}
+
+#scroll-swap {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 64px;
+    height: 64px;
+    background-color: #6AE;    
+    border: 1px solid #222;
+    font-size: 42pt;
+    text-align: center;
 }
 
 .side-scroll {
     position:absolute;
     height: 64px;
-    width: 100%;
-    left: 0;
+    /*width: 100%;*/
+    bottom: 0px;
+    left: 64px;
+    right: 0;
     background-color: #888;
     border: 1px solid #222;
 
@@ -86,13 +113,15 @@ body {
     overflow-x: scroll;
 }
 
-#top-scroll {
-    bottom: 64px;
+#move-scroll {
     background-color: #8C8;
 }
 
-#bottom-scroll {
-    bottom: 0px;
+#power-scroll {
+    background-color: #88C;
+}
+
+#attack-scroll {
     background-color: #C88;
 }
 
@@ -122,7 +151,7 @@ body {
     left: 0;
 }
 
-.move-btn, .fire-btn {
+.move-btn, .power-btn, .fire-btn {
     border: 1px solid black;
     border-radius: 8px;
     color: white;
@@ -134,10 +163,14 @@ body {
     background-color: #090;
 }
 
+.power-btn {
+    background-color: #009;
+}
+
 .fire-btn {
     background-color: #900;
 }
 
-.move-selected, .fire-selected {
-    background-color: #259;
+.move-selected, .power-selected, .fire-selected {
+    background-color: #48B;
 }

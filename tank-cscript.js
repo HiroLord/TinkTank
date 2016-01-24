@@ -1,18 +1,50 @@
-
+var scrollOption = 1;
 function main() {
     setupMessages();
 
+    $("#attack-scroll").hide();
+    $("#power-scroll").hide();
+
     $(".move-option").data("dir", 0);
 
+    $("#scroll-swap").click(function() {
+        $(".side-scroll").hide();
+        scrollOption += 1;
+        if (scrollOption > 3) {
+            scrollOption = 1;
+        }
+        if (scrollOption === 2) {
+            $("#power-scroll").show();
+        } else if (scrollOption === 3) {
+            $("#attack-scroll").show();
+        } else {
+            $("#move-scroll").show();
+        }
+    });
+
+    var spinner = '<i class="fa fa-cog fa-spin confirming"></i>';
+
     $(".move-option").click(function() {
-        if ($(".move-selected")) {
-            $(this).html($(".move-selected").html());
+        if (scrollOption === 1 && $(".move-selected")) {
+            $(this).html($(".move-selected").html() + spinner);
             $(this).data("dir",  $(".move-selected").data("dir"));
+            var packet = newPacket(1);
+            packet.write(pID);
+            packet.write($(this).data("num"));
+            packet.write($(this).data("dir"));
+            packet.send();
+        }
+    });
+
+    $(".power-option").click(function() {
+        if (scrollOption === 2 && $(".power-selected")) {
+            $(this).html($(".power-selected").html());
+            $(this).data("dir",  $(".power-selected").data("dir"));
         }
     });
 
     $(".fire-option").click(function() {
-        if ($(".fire-selected")) {
+        if (scrollOption === 3 && $(".fire-selected")) {
             $(this).html($(".fire-selected").html());
             $(this).data("dir",  $(".fire-selected").data("dir"));
         }
@@ -21,6 +53,11 @@ function main() {
     $(".move-btn").on("click", function() {
         $(".move-btn").removeClass("move-selected");
         $(this).addClass("move-selected");
+    });
+
+    $(".power-btn").on("click", function() {
+        $(".power-btn").removeClass("power-selected");
+        $(this).addClass("power-selected");
     });
 
     $(".fire-btn").on("click", function() {
@@ -59,7 +96,7 @@ function setupMessages() {
     i999.addChars(2);
 
     var i0 = createMsgStruct(0, false);
-
+    var i1 = createMsgStruct(1, false);
     var i2 = createMsgStruct(2, false);
     var i3 = createMsgStruct(3, false);
 
@@ -76,14 +113,8 @@ function setupMessages() {
 
     var o1 = createMsgStruct(1, true);
     o1.addChars(2);
-    o1.addChars(2);
-    o1.addChars(2);
-    o1.addChars(2);
-    o1.addChars(2);
-    o1.addChars(2);
-    o1.addChars(2);
-    o1.addChars(2);
-    o1.addChars(2);
+    o1.addChars(1);
+    o1.addChars(1);
 }
 
 /*
@@ -120,6 +151,8 @@ function handleNetwork() {
     msgID = packet.msgID;
 
     if (msgID === 0) {
+    } else if (msgID === 1) {
+        $(".confirming").remove();
     } else if (msgID === 2) {
         $("#confirm").removeClass("disabled");
         $(".move-option").html("");
