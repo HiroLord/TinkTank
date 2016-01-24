@@ -9,9 +9,13 @@ var startY = 48;
 var gridWidth = 12;
 var gridHeight = gridWidth;
 
+var tankImage = undefined;
+
 $(document).ready(function() {
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
+    tankImage = document.getElementById("tankImage");
+    $(".images").hide();
 
     var path = new Path2D();
 
@@ -271,6 +275,7 @@ function newTank(tID, name) {
         ctx.font = "16px sans-serif";
         ctx.fillStyle = "rgb(0,0,50)";
         ctx.fillText(this.name + " : " + this.health, this.x-20, this.y+4);
+        ctx.drawImage(tankImage, this.x - this.width, this.y - this.height, this.width*2, this.height*2);
     }
 
     t.reposition();
@@ -396,6 +401,7 @@ function gameLoop(ctx) {
             changeStage(STAGE_SET);
         }
     }
+
 }
 
 function changeStage(newStage) {
